@@ -1,0 +1,38 @@
+version: '3.5'  
+
+services:
+    frontend_AI:
+      container_name: frontti
+      image: ai-frontend
+      build: ./ml-kurkkumopo-frontend
+      ports: 
+        - 3000:3000
+      depends_on: 
+        - backend_AI
+
+    backend_AI:
+      container_name: backki
+      image: ai-backend
+      build: ./ml-kurkkumopo-backend
+      ports: 
+        - 5000:5000
+      volumes:
+        - model:/src/model       
+      depends_on: 
+        - training_AI
+
+    training_AI:
+      container_name: trainingi
+      image: ai-training
+      build: ./ml-kurkkumopo-training
+      volumes:
+        - model:/src/model
+        - data:/src/data
+        - imgs:/src/imgs
+       
+volumes:
+    model:
+    data:
+    imgs:
+      
+      

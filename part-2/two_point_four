@@ -1,0 +1,6 @@
+commmand:
+
+docker-compose up -d --scale compute=2
+docker-compose logs -f
+
+Two compute containers were enough to handle calcutation load.

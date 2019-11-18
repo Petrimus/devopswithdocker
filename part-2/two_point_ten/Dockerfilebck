@@ -1,0 +1,27 @@
+FROM ubuntu:16.04
+
+RUN apt-get update && apt-get install -y curl
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+# install node
+RUN apt install -y nodejs
+# create app directory
+WORKDIR /usr/src/backend-example
+
+# copy package and package logs from backend-example folder
+COPY /backend-example/package*.json ./
+
+# install node package
+RUN npm install
+
+# copy binaries from backend-exaxmple folder
+COPY ./backend-example .
+
+# create a log file if it doesn't exist in the root
+RUN touch /logs.txt
+# removed because 2.10.
+# ENV FRONT_URL=http://localhost:5000
+EXPOSE 8000
+# give npm start commad as an attribute list
+CMD ["npm", "start"]
+
+

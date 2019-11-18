@@ -1,0 +1,11 @@
+commans: 
+
+docker run -d -p 4567:80 devopsdockeruh/ports_exercise
+
+in browser:
+http://localhost:4567
+
+it renders
+
+"Ports configured correctly!!"
+

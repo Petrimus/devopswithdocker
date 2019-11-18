@@ -1,0 +1,5 @@
+commands:
+
+touch ~/devopswithdocker/logs.txt
+
+docker run -d -v ~/devopswithdocker/logs.txt:/usr/app/logs.txt devopsdockeruh/first_volume_exercise/

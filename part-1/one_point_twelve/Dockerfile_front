@@ -1,0 +1,28 @@
+FROM ubuntu:16.04
+
+# update ubuntu and install curl
+RUN apt-get update && apt-get install -y curl
+
+# get node packages
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+
+# install node
+RUN apt install -y nodejs
+
+# create app directory
+WORKDIR /usr/src/frontend-example
+
+# copy package and package logs from front-example folder
+COPY /frontend-example/package*.json ./
+
+
+RUN npm install && npm update
+COPY ./frontend-example .
+ENV API_URL=http://localhost:8000
+RUN npm install -g serve
+RUN npm run build
+EXPOSE 5000
+CMD ["serve", "-s",  "-l", "5000", "dist"]
+
+
+
