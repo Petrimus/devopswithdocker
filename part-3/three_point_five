@@ -1,0 +1,24 @@
+FROM node:8-alpine as build-stage
+
+WORKDIR /usr/src/frontend-example
+
+COPY ./frontend-example ./
+RUN npm install && \
+    npm update && \
+    npm audit fix && \
+    npm run build
+
+FROM node:8-alpine
+
+ENV API_URL=http://localhost:8000
+RUN npm install -g serve 
+
+COPY --from=build-stage /usr/src/frontend-example/dist /usr/src/frontend-example/dist
+
+WORKDIR /usr/src/frontend-example
+
+EXPOSE 5000
+
+USER node
+
+CMD ["serve", "-s", "-l", "5000", "dist"]

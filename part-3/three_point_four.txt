@@ -1,0 +1,37 @@
+frontti: koko 286 Mb
+
+FROM node:8-alpine
+
+ENV API_URL=http://localhost:8000
+
+WORKDIR /usr/src/frontend-example
+
+COPY ./frontend-example ./
+RUN npm install && npm update && npm audit fix
+
+RUN npm install -g serve && npm run build
+
+EXPOSE 5000
+
+USER node
+
+CMD ["serve", "-s", "-l", "5000", "dist"]
+
+Bakki: koko 156 Mb
+
+FROM node:8-alpine
+
+ENV FRONT_URL=http://localhost:5000
+
+WORKDIR /usr/src/backend-example
+RUN echo > logs.txt
+
+COPY ./backend-example .
+RUN npm install && npm update && npm audit fix
+
+EXPOSE 8000
+USER node
+
+CMD ["npm", "start"]
+
+

@@ -1,0 +1,61 @@
+frontti:
+
+FROM ubuntu:16.04
+
+ENV API_URL=http://localhost:8000
+
+RUN apt-get update && apt-get install -y \
+    curl && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash && \
+    apt-get install -y nodejs && \    
+    apt-get purge -y --auto-remove curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -m app
+
+WORKDIR /usr/src/frontend-example
+RUN chown -R app ./
+
+User app
+
+COPY ./frontend-example/package*.json ./
+RUN npm install && npm update 
+COPY ./frontend-example ./ 
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
+
+Bakki:
+
+FROM ubuntu:16.04
+
+ENV FRONT_URL=http://localhost:5000
+
+RUN apt-get update && apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash && \
+    apt install -y nodejs && \
+    apt-get purge -y --auto-remove curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -m app    
+
+WORKDIR /usr/src/backend-example
+RUN echo > logs.txt
+
+RUN chown -R app /usr/src/backend-example
+
+USER app
+
+COPY /backend-example/package*.json ./
+RUN npm install
+COPY ./backend-example .
+
+
+
+EXPOSE 8000
+
+CMD ["npm", "start"]
+
+
+
+
+

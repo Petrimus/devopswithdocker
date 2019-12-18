@@ -1,0 +1,21 @@
+
+
+I usually work with React. Base image is ubuntu. It could be a smaller image, but at the moment I don't know all the details required by React (and node...). For example Alpine could be too "stripped". I update apt-get (or I think ubuntu package lists) and install git and curl. Then I curl node, which adds it to apt-get package list and then install it. And finally to save some space I remove curl.
+
+System:
+ubuntu with
+git
+NodeJs
+npm
+
+Link: https://hub.docker.com/r/petrimus/environment
+
+
+FROM ubuntu:16.04
+
+
+RUN apt-get update && apt-get install git -y && apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash && \
+    apt install -y nodejs && \
+    apt-get purge -y --auto-remove curl
+
